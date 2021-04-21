@@ -1,5 +1,10 @@
-#if __GLASGOW_HASKELL__ >= 701
+#if __GLASGOW_HASKELL__ >= 701 && __GLASGOW_HASKELL__ < 810
 {-# LANGUAGE Safe #-}
+#else
+{-# LANGUAGE Trustworthy #-}
+#endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, ConstrainedClassMethods, TypeOperators #-}
 #endif
 
 -----------------------------------------------------------------------------
@@ -32,6 +37,9 @@ module Text.PrettyPrint.Annotated.HughesPJClass (
   ) where
 
 import Text.PrettyPrint.Annotated.HughesPJ
+#if MIN_VERSION_base(4,14,0)
+import GHC.Types (type (@@), Total)
+#endif
 
 -- | Level of detail in the pretty printed output. Level 0 is the least
 -- detail.
@@ -60,7 +68,7 @@ class Pretty a where
 #endif
 
 -- | Pretty print a value with the 'prettyNormal' level.
-prettyShow :: (Pretty a) => a -> String
+prettyShow :: Pretty a => a -> String
 prettyShow = render . pPrint
 
 pPrint0 :: (Pretty a) => PrettyLevel -> a -> Doc ann

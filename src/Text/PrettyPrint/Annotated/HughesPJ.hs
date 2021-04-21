@@ -1,8 +1,15 @@
 {-# OPTIONS_HADDOCK not-home #-}
 {-# LANGUAGE BangPatterns #-}
-#if __GLASGOW_HASKELL__ >= 701
+#if __GLASGOW_HASKELL__ >= 701 && __GLASGOW_HASKELL__ < 810
 {-# LANGUAGE Safe #-}
+#else
+{-# LANGUAGE Trustworthy #-}
+#endif
+#if __GLASGOW_HASKELL__ >= 701
 {-# LANGUAGE DeriveGeneric #-}
+#endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors #-}
 #endif
 
 -----------------------------------------------------------------------------
@@ -95,6 +102,9 @@ import Data.Monoid     ( Monoid(mempty, mappend)  )
 import Data.String     ( IsString(fromString) )
 
 import GHC.Generics
+#if __GLASGOW_HASKELL__ >= 810
+import GHC.Types (Total)
+#endif
 
 -- ---------------------------------------------------------------------------
 -- The Doc calculus
@@ -194,6 +204,9 @@ data Doc a
   | Above (Doc a) Bool (Doc a)                       -- ^ True <=> never overlap.
 #if __GLASGOW_HASKELL__ >= 701
   deriving (Generic)
+#endif
+#if MIN_VERSION_base(4,14,0)
+instance Total Doc
 #endif
 
 {-
