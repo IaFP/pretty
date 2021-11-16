@@ -4,7 +4,7 @@
 {-# LANGUAGE Trustworthy #-}
 #endif
 #if __GLASGOW_HASKELL__ >= 810
-{-# LANGUAGE PartialTypeConstructors, ConstrainedClassMethods, TypeOperators #-}
+{-# LANGUAGE PartialTypeConstructors, ConstrainedClassMethods, TypeOperators, RankNTypes #-}
 #endif
 
 -----------------------------------------------------------------------------
